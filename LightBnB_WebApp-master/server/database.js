@@ -10,8 +10,6 @@ const pool = new Pool ({
 const properties = require('./json/properties.json');
 const users = require('./json/users.json');
 
-/// Users
-
 /**
  * Get a single user from the database given their email.
  * @param {String} email The email of the user.
@@ -23,7 +21,6 @@ const getUserWithEmail = function(email) {
   SELECT * FROM users WHERE email = $1;
   `, [email])
   .then(res => res.rows[0] || null);
-
 }
 exports.getUserWithEmail = getUserWithEmail;
 
@@ -79,8 +76,6 @@ const getAllReservations = function(guest_id, limit = 10) {
   ORDER BY reservations.start_date
   LIMIT $2;`, [guest_id, limit])
   .then(res => console.log(res.rows)|| null);
-
-
 }
 exports.getAllReservations = getAllReservations;
 
@@ -93,10 +88,6 @@ exports.getAllReservations = getAllReservations;
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 
-
-
-
-
 const getAllProperties = function(options, limit = 10) {
 
   const queryParams = [];
@@ -107,7 +98,6 @@ const getAllProperties = function(options, limit = 10) {
   JOIN property_reviews ON properties.id = property_id
   `;
 
-  
   if (options.city) {
     queryParams.push(`%${options.city}%`);
     queryString += `WHERE city LIKE $${queryParams.length} `;
@@ -139,13 +129,9 @@ const getAllProperties = function(options, limit = 10) {
 
   return pool.query(queryString, queryParams)
   .then(res => res.rows);
-
-
 }
 
 exports.getAllProperties = getAllProperties;
-
-
 
 
 /**
@@ -163,12 +149,5 @@ const addProperty = function(property) {
     property.cover_photo_url, property.cost_per_night, property.street, property.city, property.province,
     property.post_code, property.country, property.parking_spaces, property.number_of_bathrooms, property.number_of_bedrooms])
   .then(res => res.rows|| null);
-
-
-
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
-  return Promise.resolve(property);
 }
 exports.addProperty = addProperty;
