@@ -8,7 +8,7 @@ module.exports = function(router, database) {
       res.send(e)
     }); 
   });
-
+ 
   router.get('/reservations', (req, res) => {
     const userId = req.session.userId;
     if (!userId) {
